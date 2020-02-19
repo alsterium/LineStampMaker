@@ -4,6 +4,7 @@ new Vue({
     toggleView: true,
     stampEditMode: false,
     facingValue: "environment",
+    selectedModel:"",
     selectedFont: "",
     Text: ""
   },
@@ -99,6 +100,11 @@ new Vue({
 
       this.$nextTick(() => initStampCanvas()); //DOMレンダリングが更新されたタイミングで呼び出されるコールバック関数
       this.stampEditMode = true;
+    },
+    changeModel: function(){
+      console.log(this.selectedModel);
+      currentModel = "assetts/" + this.selectedModel;
+      reloadModel();
     },
     changeTextColor: function(str) {
       updateText(str, "text_color");

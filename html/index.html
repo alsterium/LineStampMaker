@@ -87,7 +87,7 @@
         <div class="row">
           <div v-show="!stampEditMode">
             <!-- 姿勢推定モード -->
-            <a class="btn" @click="activateCamera">カメラを起動</a>
+            <a class="btn" @click="activateCamera"><span v-if="toggleView">カメラを起動</span><span v-if="!toggleView">撮影</span></a>
             <!-- <input class="btn" type="button" value="カメラの切り替え" v-on:click="toggleCamera" v-if="!toggleView" /> -->
             <a
               class="btn-floating waves-effect btn-large waves-light red"
@@ -100,15 +100,15 @@
               写真を選択
               <input type="file" style="display: none;" />
             </label> -->
-            <div class="input-field col">
-              <select>
+            <div class="input-field col"  v-show="toggleView">
+              <select v-model="selectedModel" @change="changeModel">
                 <option value="" disabled selected>モデルを選択</option>
-                <option value="MikuMiku.vrm">Model 1</option>
-                <option value="2">Model 2</option>
+                <option value="MikuMiku.vrm">MikuMiku</option>
+                <option value="AliciaSolid.vrm">Alicia</option>
               </select>
               <label>chose model</label>
             </div>
-            <a class="btn" @click="toggleStampEditMode">ポーズを決定</a>
+            <a class="btn" @click="toggleStampEditMode" v-show="toggleView">ポーズを決定</a>
             <!-- <a class="btn" v-on:click="grabImage" id="dllink" download="canvas.png"
               >ポーズを決定</a
             > -->
@@ -127,14 +127,7 @@
                       <i class="material-icons">format_size</i>TextStyle
                     </div>
                     <div class="collapsible-body row">
-                      <div class="input-field text-picker col s6">
-                        TextFont
-                        <select>
-                          <option value="1">Font 1</option>
-                          <option value="2">Font 2</option>
-                          <option value="3">Font 3</option>
-                        </select>
-                      </div>
+                      
                       <div class="text-color-picker col s6">
                         TextColor
                         <div style="margin-bottom: 3px;">

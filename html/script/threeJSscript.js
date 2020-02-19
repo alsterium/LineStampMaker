@@ -2,14 +2,14 @@
 // eslint-disable-next-line linebreak-style
 
 // three.jsで使う各オブジェクトの宣言
-var render, scene, camera, light, controls;
-var currentModel = "assetts/AliciaSolid.vrm";
+var renderer, scene, camera, light, controls;
+var currentModel = "assetts/MikuMiku.vrm";
 
 // CHANGED: ポーズ変換に必要な変数とか
 var init_pose = undefined;
 var changeFlag = false;
 var currentVrm = undefined;
-const  clock = new THREE.Clock();
+const clock = new THREE.Clock();
 
 // 入力するopenposeデータ
 var openPoseDataArray = [
@@ -84,60 +84,25 @@ function swap(a, x, y) {
 function setPoseFromQuarternion(QuatArray) {
   let Pose = {
     hips: {
-      rotation:[
-      0.0,
-      1.0,
-      0.0,
-      0.0
-    ]
-  },
+      rotation: [0.0, 1.0, 0.0, 0.0]
+    },
     rightUpperLeg: {
-      rotation: [
-        QuatArray[1].x,
-        QuatArray[1].y,
-        QuatArray[1].z,
-        QuatArray[1].w
-      ]
+      rotation: [QuatArray[1].x, QuatArray[1].y, QuatArray[1].z, QuatArray[1].w]
     },
     rightLowerLeg: {
-      rotation: [
-        QuatArray[2].x,
-        QuatArray[2].y,
-        QuatArray[2].z,
-        QuatArray[2].w
-      ]
+      rotation: [QuatArray[2].x, QuatArray[2].y, QuatArray[2].z, QuatArray[2].w]
     },
     leftUpperLeg: {
-      rotation: [
-        QuatArray[4].x,
-        QuatArray[4].y,
-        QuatArray[4].z,
-        QuatArray[4].w
-      ]
+      rotation: [QuatArray[4].x, QuatArray[4].y, QuatArray[4].z, QuatArray[4].w]
     },
     leftLowerLeg: {
-      rotation: [
-        QuatArray[5].x,
-        QuatArray[5].y,
-        QuatArray[5].z,
-        QuatArray[5].w
-      ]
+      rotation: [QuatArray[5].x, QuatArray[5].y, QuatArray[5].z, QuatArray[5].w]
     },
     spine: {
-      rotation: [
-        QuatArray[7].x,
-        QuatArray[7].y,
-        QuatArray[7].z,
-        QuatArray[7].w
-      ]
+      rotation: [QuatArray[7].x, QuatArray[7].y, QuatArray[7].z, QuatArray[7].w]
     },
     neck: {
-      rotation: [
-        QuatArray[9].x,
-        QuatArray[9].y,
-        QuatArray[9].z,
-        QuatArray[9].w
-      ]
+      rotation: [QuatArray[9].x, QuatArray[9].y, QuatArray[9].z, QuatArray[9].w]
     },
     leftUpperArm: {
       rotation: [
@@ -264,30 +229,30 @@ function computeUnit(bonesArray) {
   return NormVec;
 }
 //クォータニオンを求める
-function calcquaternion(normvec,up) {
+function calcquaternion(normvec, up) {
   var q = new THREE.Quaternion();
-  return q.setFromUnitVectors(up,normvec);
+  return q.setFromUnitVectors(up, normvec);
 }
 //OpenPoseデータから回転制御形式のポーズデータを求める
-function convertPose(OpenPoseData) {  
-  //ボーンノードごとの上方向ベクトルの設定  
+function convertPose(OpenPoseData) {
+  //ボーンノードごとの上方向ベクトルの設定
   let up = new Array();
-  up[0] = new THREE.Vector3(0,1,0);
-  up[1] = new THREE.Vector3(0,-1,0);
-  up[2] = new THREE.Vector3(0,-1,0);
-  up[3] = new THREE.Vector3(0,1,0);
-  up[4] = new THREE.Vector3(0,-1,0);
-  up[5] = new THREE.Vector3(0,-1,0);
-  up[6] = new THREE.Vector3(0,1,0);
-  up[7] = new THREE.Vector3(0,1,0);
-  up[8] = new THREE.Vector3(0,1,0);
-  up[9] = new THREE.Vector3(0,1,0);
-  up[10] = new THREE.Vector3(-1,0,0);
-  up[11] = new THREE.Vector3(-1,0,0);
-  up[12] = new THREE.Vector3(-1,0,0);
-  up[13] = new THREE.Vector3(1,0,0);
-  up[14] = new THREE.Vector3(1,0,0);
-  up[15] = new THREE.Vector3(1,0,0);
+  up[0] = new THREE.Vector3(0, 1, 0);
+  up[1] = new THREE.Vector3(0, -1, 0);
+  up[2] = new THREE.Vector3(0, -1, 0);
+  up[3] = new THREE.Vector3(0, 1, 0);
+  up[4] = new THREE.Vector3(0, -1, 0);
+  up[5] = new THREE.Vector3(0, -1, 0);
+  up[6] = new THREE.Vector3(0, 1, 0);
+  up[7] = new THREE.Vector3(0, 1, 0);
+  up[8] = new THREE.Vector3(0, 1, 0);
+  up[9] = new THREE.Vector3(0, 1, 0);
+  up[10] = new THREE.Vector3(-1, 0, 0);
+  up[11] = new THREE.Vector3(-1, 0, 0);
+  up[12] = new THREE.Vector3(-1, 0, 0);
+  up[13] = new THREE.Vector3(1, 0, 0);
+  up[14] = new THREE.Vector3(1, 0, 0);
+  up[15] = new THREE.Vector3(1, 0, 0);
 
   //配列の要素をx,z,yからx,y,zに入れ替え
   for (i = 0; i < OpenPoseData.length; i++) swap(OpenPoseData[i], 1, 2);
@@ -296,25 +261,36 @@ function convertPose(OpenPoseData) {
   //単位ベクトルを算出
   let normVec = computeUnit(OpenPoseData);
   let quat = new THREE.Quaternion();
-  //各ノードごとの回転角度（クォータニオン）を算出  
+  //各ノードごとの回転角度（クォータニオン）を算出
   for (let i = 0; i < normVec.length; i++)
-    quat[i] = calcquaternion(normVec[i],up[i]);
-    //ポーズを返す
+    quat[i] = calcquaternion(normVec[i], up[i]);
+  //ポーズを返す
   return setPoseFromQuarternion(quat);
 }
 
 // CHANGED: Add function
-function initializePose(vrm){
+function initializePose(vrm) {
   vrm.humanoid.setPose(init_pose);
 }
 
+function reloadModel(modelName) {
+  renderer = null;
+  scene = null;
+  camera = null;
+  light = null;
+  controls = null;
+  init_pose = undefined;
+  changeFlag = false;
+  currentVrm = undefined;
+  init();
+}
+
 //VRMモデルをロードする
-function loadVRM(currentModel) {
-  //let currentVrm = undefined;
-  const loader = new THREE.GLTFLoader();
+function loadVRM(Model) {
+  let loader = new THREE.GLTFLoader();
   loader.crossOrigin = "anonymous";
   loader.load(
-    currentModel,
+    Model,
     gltf => {
       THREE.VRM.from(gltf).then(vrm => {
         // CHANGED: ポーズ変換させるためにvrmを記憶
@@ -324,12 +300,12 @@ function loadVRM(currentModel) {
         THREE.VRM.from(gltf).then(vrm => {
           // CHANGED: 初期ポーズ(T)を記憶しておく
           init_pose = vrm.humanoid.getPose();
-          Object.keys(init_pose).forEach((key) =>{
+          Object.keys(init_pose).forEach(key => {
             delete init_pose[key].position;
           });
 
-          let pose = convertPose(openPoseDataArray);
-          vrm.humanoid.setPose(pose);
+          // let pose = convertPose(openPoseDataArray);
+          // vrm.humanoid.setPose(pose);
         });
       });
     },
@@ -344,7 +320,6 @@ function loadVRM(currentModel) {
 }
 //Three.jsの初期化関数
 function init() {
-
   //create renderer
   renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector("#model_preview"),
@@ -396,7 +371,7 @@ function animate() {
   render();
 
   // CHANGED: ポーズの動的な変換
-  if(currentVrm && changeFlag){
+  if (currentVrm && changeFlag) {
     // ポーズを初期化してからでないと
     // 変更後から変更するのでおかしくなる
     initializePose(currentVrm);
