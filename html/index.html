@@ -85,7 +85,7 @@
     <div id="modal1" class="modal">
       <div class="modal-content" style="text-align: center;">
         <h4>About Emoji Stamp Maker</h4>
-        <img src="./assetts/poster3.jpg" style="width: 30%; height: auto;">
+        <img src="./assetts/poster3.jpg" style="width: 30%; height: auto;" />
         <p>version 1.0.0</p>
         <p>Frontend Coding: Endo, Kitsuya</p>
         <p>Backend Coding: Hayasaka, Hinoto</p>
@@ -93,7 +93,11 @@
         <p>©2020 Emoji Stamp Maker,All rights reserved.</p>
       </div>
       <div class="modal-footer">
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+        <a
+          href="#!"
+          class="modal-action modal-close waves-effect waves-green btn-flat"
+          >Close</a
+        >
       </div>
     </div>
 
@@ -114,26 +118,9 @@
         ></video>
       </div>
       <div class="card">
-        <div class="row">
-          <div v-show="!stampEditMode">
-            <!-- 姿勢推定モード -->
-            <a class="btn  orange darken-1" @click="activateCamera"
-              ><span v-if="toggleView">カメラを起動</span
-              ><span v-if="!toggleView">撮影</span></a
-            >
-            <!-- <input class="btn" type="button" value="カメラの切り替え" v-on:click="toggleCamera" v-if="!toggleView" /> -->
-            <a
-              class="btn-floating waves-effect btn-large waves-light red"
-              v-on:click="toggleCamera"
-              v-if="!toggleView"
-              v-show="!stampEditMode"
-              ><i class="material-icons">switch_camera</i></a
-            >
-            <!-- <label class="btn">
-              写真を選択
-              <input type="file" style="display: none;" />
-            </label> -->
-            <div class="input-field col" v-show="toggleView">
+        <div v-show="!stampEditMode">
+          <div class="row">
+            <div class="input-field col s6" v-show="toggleView">
               <select v-model="selectedModel" @change="changeModel">
                 <option value="" disabled selected>モデルを選択</option>
                 <option value="bear.vrm">Kuma</option>
@@ -142,109 +129,159 @@
               </select>
               <label>chose model</label>
             </div>
-            <a class="btn pink darken-1" @click="toggleStampEditMode" v-show="toggleView"
+            <!-- 姿勢推定モード -->
+            <a class="btn  orange darken-1 col s6" @click="activateCamera"
+              ><span v-if="toggleView">カメラを起動</span
+              ><span v-if="!toggleView">撮影</span></a
+            >
+            <a
+            class="btn-floating waves-effect btn-large waves-light red"
+            v-on:click="toggleCamera"
+            v-if="!toggleView"
+            v-show="!stampEditMode"
+            ><i class="material-icons">switch_camera</i></a
+          >
+          </div>
+          <div class="row">
+            <div class="input-field col s6" v-show="toggleView">
+              <select
+                v-model="selectedBlendedShape"
+              >
+                <option value="Joy">喜</option>
+                <option value="Angry">怒</option>
+                <option value="Sorrow">哀</option>
+                <option value="Fun">楽</option>
+                <option value="BlinkL">左目</option>
+                <option value="BlinkR">右目</option>
+              </select>
+              <label>chose</label>
+              <p class="range-field">
+                <input type="range" step="0.1" max="1.0" v-model="BlendedShapeValue" @change="changeBlendedShape"/>
+              </p>
+            </div>
+            <a
+              class="btn pink darken-1 col s6"
+              @click="toggleStampEditMode"
+              v-show="toggleView"
               >ポーズを決定</a
             >
-            <!-- <a class="btn" v-on:click="grabImage" id="dllink" download="canvas.png"
+          </div>
+
+          <!-- <input class="btn" type="button" value="カメラの切り替え" v-on:click="toggleCamera" v-if="!toggleView" /> -->
+
+          
+
+          <!-- <label class="btn">
+              写真を選択
+              <input type="file" style="display: none;" />
+            </label> -->
+
+          <!-- <a class="btn" v-on:click="grabImage" id="dllink" download="canvas.png"
               >ポーズを決定</a
             > -->
-          </div>
-          <div v-show="stampEditMode">
-            <!-- スタンプ作成モード -->
-            <div class="input-field">
-              <div class="input-div">
-                <input
-                  id="stampText"
-                  type="text"
-                  class="validate"
-                  v-model="Text"
-                  @change="changeText"
-                />
-                <label for="stampText">文字を入力</label>
-              </div>
-              <div>
-                <ul class="collapsible z-depth-1">
-                  <li>
-                    <div class="collapsible-header">
-                      <i class="material-icons">format_size</i>TextStyle
+        </div>
+        <div v-show="stampEditMode">
+          <!-- スタンプ作成モード -->
+          <div class="input-field">
+            <div class="input-div">
+              <input
+                id="stampText"
+                type="text"
+                class="validate"
+                v-model="Text"
+                @change="changeText"
+              />
+              <label for="stampText">文字を入力</label>
+            </div>
+            <div>
+              <ul class="collapsible z-depth-1">
+                <li>
+                  <div class="collapsible-header">
+                    <i class="material-icons">format_size</i>TextStyle
+                  </div>
+                  <div class="collapsible-body row">
+                    <div class="text-color-picker col s6">
+                      TextColor
+                      <div style="margin-bottom: 3px;">
+                        <a
+                          class="waves-light btn-floating red"
+                          @click="changeTextColor('red')"
+                        ></a>
+                        <a
+                          class="waves-light btn-floating blue"
+                          @click="changeTextColor('blue')"
+                        ></a>
+                        <a
+                          class="waves-light btn-floating green"
+                          @click="changeTextColor('green')"
+                        ></a>
+                      </div>
+                      <div>
+                        <a
+                          class="waves-light btn-floating pink"
+                          @click="changeTextColor('pink')"
+                        ></a>
+                        <a
+                          class="waves-light btn-floating yellow"
+                          @click="changeTextColor('yellow')"
+                        ></a>
+                        <a
+                          class="waves-light btn-floating purple"
+                          @click="changeTextColor('purple')"
+                        ></a>
+                      </div>
                     </div>
-                    <div class="collapsible-body row">
-                      <div class="text-color-picker col s6">
-                        TextColor
-                        <div style="margin-bottom: 3px;">
-                          <a
-                            class="waves-light btn-floating red"
-                            @click="changeTextColor('red')"
-                          ></a>
-                          <a
-                            class="waves-light btn-floating blue"
-                            @click="changeTextColor('blue')"
-                          ></a>
-                          <a
-                            class="waves-light btn-floating green"
-                            @click="changeTextColor('green')"
-                          ></a>
-                        </div>
-                        <div>
-                          <a
-                            class="waves-light btn-floating pink"
-                            @click="changeTextColor('pink')"
-                          ></a>
-                          <a
-                            class="waves-light btn-floating yellow"
-                            @click="changeTextColor('yellow')"
-                          ></a>
-                          <a
-                            class="waves-light btn-floating purple"
-                            @click="changeTextColor('purple')"
-                          ></a>
-                        </div>
-                      </div>
-                      <div class="input-field text-picker col s6">
-                        TextFont
-                        <select v-model="selectedFont" @change="changeFonts">
-                          <option value="Nico Moji">ニコモジ</option>
-                          <option value="M PLUS 1p">M PLUS 1p</option>
-                          <option value="M PLUS Rounded 1c"
-                            >M PLUS Rounded 1c</option
-                          >
-                          <option value="Hannari">はんなり明朝</option>
-                          <option value="Nikukyu">ニクキュウ</option>
-                        </select>
-                      </div>
-
-                      <br />
-                      <div class="col">
+                    <div class="input-field text-picker col s6">
+                      TextFont
+                      <select v-model="selectedFont" @change="changeFonts">
+                        <option value="Nico Moji">ニコモジ</option>
+                        <option value="M PLUS 1p">M PLUS 1p</option>
+                        <option value="M PLUS Rounded 1c"
+                          >M PLUS Rounded 1c</option
+                        >
+                        <option value="Hannari">はんなり明朝</option>
+                        <option value="Nikukyu">ニクキュウ</option>
+                      </select>
+                    </div>
+                    <div class="row">
+                      <div class="col" style="">
                         BorderWeight
                         <div>
-                          <a class="btn pink darken-3" @click="changeBorderWidth(25)"
+                          <a
+                            class="btn pink darken-3"
+                            @click="changeBorderWidth(25)"
                             >Heavy</a
                           >
-                          <a class="btn pink darken-2" @click="changeBorderWidth(20)"
+                          <a
+                            class="btn pink darken-2"
+                            @click="changeBorderWidth(20)"
                             >Middle</a
                           >
-                          <a class="btn pink darken-1" @click="changeBorderWidth(15)"
+                          <a
+                            class="btn pink darken-1"
+                            @click="changeBorderWidth(15)"
                             >Light</a
                           >
                         </div>
                       </div>
-                      <a class="btn pink accent-2" @click="writeDownToLowerCanvas"
-                        >位置を確定</a
-                      >
                     </div>
-                  </li>
-                </ul>
-              </div>
-              <a class="btn orange lighten-2" @click="nextStamp">次のスタンプ</a>
-              <a
-                class="btn orange darken-3"
-                @click="grabImage"
-                id="dllink"
-                download="canvas.zip"
-                >完成！({{stampImg.length+1}}ファイルZipでDL)</a
-              >
-              <!--a class="btn"  @click=imagedownload>完成！</a-->
+                    
+                    <a class="btn pink accent-2" @click="writeDownToLowerCanvas"
+                      >位置を確定</a
+                    >
+                  </div>
+                </li>
+              </ul>
             </div>
+            <a class="btn orange lighten-2" @click="nextStamp">次のスタンプ</a>
+            <a
+              class="btn orange darken-3"
+              @click="grabImage"
+              id="dllink"
+              download="canvas.zip"
+              >完成！({{stampImg.length+1}}ファイルZipでDL)</a
+            >
+            <!--a class="btn"  @click=imagedownload>完成！</a-->
           </div>
         </div>
       </div>

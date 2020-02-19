@@ -8,6 +8,9 @@ var currentModel = "assetts/bear.vrm";
 // CHANGED: ポーズ変換に必要な変数とか
 var init_pose = undefined;
 var changeFlag = false;
+var shapeFlag = false;
+var shapeVal = 0.0;
+var shapeKey = -1;
 var currentVrm = undefined;
 const clock = new THREE.Clock();
 
@@ -84,7 +87,7 @@ function swap(a, x, y) {
 function setPoseFromQuarternion(QuatArray) {
   let Pose = {
     hips: {
-      rotation: [0.0, 1.0, 0.0, 0.0]
+      rotation: [0.0, 0.0, 0.0, 0.0]
     },
     rightUpperLeg: {
       rotation: [QuatArray[1].x, QuatArray[1].y, QuatArray[1].z, QuatArray[1].w]
@@ -285,6 +288,13 @@ function reloadModel(modelName) {
   init();
 }
 
+function setBlendedShape(shapeName,value) {
+  shapeVal = value;
+  shapeFlag = true;
+  shapeKey = shapeName;
+  console.log("change blended shapes", currentVrm);
+}
+
 //VRMモデルをロードする
 function loadVRM(Model) {
   let loader = new THREE.GLTFLoader();
@@ -324,9 +334,8 @@ function init() {
   renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector("#model_preview"),
     preserveDrawingBuffer: true,
-    alpha:true
+    alpha: true
   });
-  
 
   // retina対応
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -343,7 +352,7 @@ function init() {
   camera.position.set(0, 1, -5);
 
   //light
-  light = new THREE.DirectionalLight(0xffffff,1.0);
+  light = new THREE.DirectionalLight(0xffffff, 1.0);
   light.position.set(1.0, 1.0, -1.0).normalize();
   scene.add(light);
 
@@ -383,6 +392,20 @@ function animate() {
     currentVrm.humanoid.setPose(pose);
     currentVrm.update(deltaTime);
     changeFlag = false;
+  }
+
+  if (currentVrm && shapeFlag) {
+    const deltaTime = clock.getDelta();
+    currentVrm.blendShapeProxy.setValue(
+      THREE.VRMSchema.BlendShapePresetName.Neutral,
+      1
+    );
+    currentVrm.blendShapeProxy.setValue(
+      THREE.VRMSchema.BlendShapePresetName[shapeKey],
+      shapeVal
+    );
+    currentVrm.update(deltaTime);
+    shapeFlag = false;
   }
 }
 

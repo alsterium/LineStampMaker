@@ -6,6 +6,8 @@ new Vue({
     facingValue: "environment",
     selectedModel: "",
     selectedFont: "",
+    selectedBlendedShape:"",
+    BlendedShapeValue:"",
     Text: "",
     stampImg: []
   },
@@ -82,6 +84,9 @@ new Vue({
     changeModel: function() {
       currentModel = "assetts/" + this.selectedModel;
       reloadModel();
+    },
+    changeBlendedShape:function(){
+      setBlendedShape(this.selectedBlendedShape,this.BlendedShapeValue);
     },
     nextStamp: function() {
       // this.toggleView = !this.toggleView;
