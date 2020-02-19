@@ -142,23 +142,36 @@
             ><i class="material-icons">switch_camera</i></a
           >
           </div>
+          <ul class="collapsible">
+            <li>
+              <div class="collapsible-header">
+                ModelSetting
+              </div>
+              <div class="collapsible-body">
+                <div class="row">
+                  <div class="input-field col s6" v-show="toggleView">
+                    <select
+                      v-model="selectedBlendedShape"
+                    >
+                      <option value="" disabled selected> 表情のコントロール</option>
+                      <option value="Joy">喜</option>
+                      <option value="Angry">怒</option>
+                      <option value="Sorrow">哀</option>
+                      <option value="Fun">楽</option>
+                      <option value="BlinkL">左目</option>
+                      <option value="BlinkR">右目</option>
+                    </select>
+                    <label>chose</label>
+                    <p class="range-field">
+                      <input type="range" step="0.1" max="1.0" v-model="BlendedShapeValue" @change="changeBlendedShape"/>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
           <div class="row">
-            <div class="input-field col s6" v-show="toggleView">
-              <select
-                v-model="selectedBlendedShape"
-              >
-                <option value="Joy">喜</option>
-                <option value="Angry">怒</option>
-                <option value="Sorrow">哀</option>
-                <option value="Fun">楽</option>
-                <option value="BlinkL">左目</option>
-                <option value="BlinkR">右目</option>
-              </select>
-              <label>chose</label>
-              <p class="range-field">
-                <input type="range" step="0.1" max="1.0" v-model="BlendedShapeValue" @change="changeBlendedShape"/>
-              </p>
-            </div>
+            
             <a
               class="btn pink darken-1 col s6"
               @click="toggleStampEditMode"
@@ -244,7 +257,7 @@
                       </select>
                     </div>
                     <div class="row">
-                      <div class="col" style="">
+                      <div class="col">
                         BorderWeight
                         <div>
                           <a
