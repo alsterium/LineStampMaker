@@ -21,7 +21,7 @@ new Vue({
       var zip = new JSZip();
       //var image = new Image();
       //image.src = canvas.toDataURL();
-      //console.log(image);
+      //console.log(image)
       //image = window.atob(image.replace(/^.*,/,''));
       //console.log(image);
       zip.file("stamp.png", canvas.toDataURL().split("base64,")[1], {
@@ -105,6 +105,10 @@ new Vue({
       console.log(this.selectedModel);
       currentModel = "assetts/" + this.selectedModel;
       reloadModel();
+    },
+    nextStamp: function(){
+      // this.toggleView = !this.toggleView;
+      this.stampEditMode = !this.stampEditMode;
     },
     changeTextColor: function(str) {
       updateText(str, "text_color");
