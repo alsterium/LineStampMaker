@@ -6,10 +6,10 @@ function initStampCanvas() {
   stampCanvas = new fabric.Canvas("stampCanvas_upper");
   var fontStyle = {
     font: "Nico Moji",
-    size: 100,
+    size: 50,
     originX: "center",
     originY: "center",
-    text: "おいっす"
+    text: "文字を入力してください"
   };
   var textGroup = create_bag_character(fontStyle);
   stampCanvas.add(textGroup);

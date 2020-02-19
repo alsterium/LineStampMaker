@@ -33,11 +33,26 @@
       rel="stylesheet"
     />
 
-    <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=M+PLUS+1p" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/earlyaccess/hannari.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/earlyaccess/nikukyu.css" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/earlyaccess/nicomoji.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=M+PLUS+1p"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/earlyaccess/hannari.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/earlyaccess/nikukyu.css"
+      rel="stylesheet"
+    />
     <script src="./script/threeJSscript.js"></script>
     <script src="./script/stampScript.js"></script>
     <!-- CHANGED: -->
@@ -54,7 +69,7 @@
     <!-- <div class="row"> -->
     <nav>
       <div class="nav-wrapper">
-        <a href="#" class="brand-logo center"
+        <a href="#modal1" class="brand-logo center modal-trigger"
           ><span style="font-family: 'Pacifico', cursive; font-size: 65%;"
             >Emoji Stamp Maker</span
           >
@@ -66,6 +81,21 @@
             </ul> -->
       </div>
     </nav>
+
+    <div id="modal1" class="modal">
+      <div class="modal-content" style="text-align: center;">
+        <h4>About Emoji Stamp Maker</h4>
+        <img src="./assetts/poster3.jpg" style="width: 30%; height: auto;">
+        <p>version 1.0.0</p>
+        <p>Frontend Coding: Endo, Kitsuya</p>
+        <p>Backend Coding: Hayasaka, Hinoto</p>
+        <p>Charactor・Poster Design: Nara</p>
+        <p>©2020 Emoji Stamp Maker,All rights reserved.</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+      </div>
+    </div>
 
     <div id="app">
       <div class="adjust-box box-1x1">
@@ -87,7 +117,10 @@
         <div class="row">
           <div v-show="!stampEditMode">
             <!-- 姿勢推定モード -->
-            <a class="btn" @click="activateCamera"><span v-if="toggleView">カメラを起動</span><span v-if="!toggleView">撮影</span></a>
+            <a class="btn  orange darken-1" @click="activateCamera"
+              ><span v-if="toggleView">カメラを起動</span
+              ><span v-if="!toggleView">撮影</span></a
+            >
             <!-- <input class="btn" type="button" value="カメラの切り替え" v-on:click="toggleCamera" v-if="!toggleView" /> -->
             <a
               class="btn-floating waves-effect btn-large waves-light red"
@@ -100,7 +133,7 @@
               写真を選択
               <input type="file" style="display: none;" />
             </label> -->
-            <div class="input-field col"  v-show="toggleView">
+            <div class="input-field col" v-show="toggleView">
               <select v-model="selectedModel" @change="changeModel">
                 <option value="" disabled selected>モデルを選択</option>
                 <option value="bear.vrm">Kuma</option>
@@ -109,7 +142,9 @@
               </select>
               <label>chose model</label>
             </div>
-            <a class="btn" @click="toggleStampEditMode" v-show="toggleView">ポーズを決定</a>
+            <a class="btn pink darken-1" @click="toggleStampEditMode" v-show="toggleView"
+              >ポーズを決定</a
+            >
             <!-- <a class="btn" v-on:click="grabImage" id="dllink" download="canvas.png"
               >ポーズを決定</a
             > -->
@@ -118,7 +153,13 @@
             <!-- スタンプ作成モード -->
             <div class="input-field">
               <div class="input-div">
-                <input id="stampText" type="text" class="validate" v-model="Text" @change="changeText">
+                <input
+                  id="stampText"
+                  type="text"
+                  class="validate"
+                  v-model="Text"
+                  @change="changeText"
+                />
                 <label for="stampText">文字を入力</label>
               </div>
               <div>
@@ -128,18 +169,35 @@
                       <i class="material-icons">format_size</i>TextStyle
                     </div>
                     <div class="collapsible-body row">
-                      
                       <div class="text-color-picker col s6">
                         TextColor
                         <div style="margin-bottom: 3px;">
-                          <a class="waves-light btn-floating red" @click="changeTextColor('red')"></a>
-                          <a class="waves-light btn-floating blue" @click="changeTextColor('blue')"></a>
-                          <a class="waves-light btn-floating green" @click="changeTextColor('green')"></a>
+                          <a
+                            class="waves-light btn-floating red"
+                            @click="changeTextColor('red')"
+                          ></a>
+                          <a
+                            class="waves-light btn-floating blue"
+                            @click="changeTextColor('blue')"
+                          ></a>
+                          <a
+                            class="waves-light btn-floating green"
+                            @click="changeTextColor('green')"
+                          ></a>
                         </div>
                         <div>
-                          <a class="waves-light btn-floating pink" @click="changeTextColor('pink')"></a>
-                          <a class="waves-light btn-floating yellow" @click="changeTextColor('yellow')"></a>
-                          <a class="waves-light btn-floating purple" @click="changeTextColor('purple')"></a>
+                          <a
+                            class="waves-light btn-floating pink"
+                            @click="changeTextColor('pink')"
+                          ></a>
+                          <a
+                            class="waves-light btn-floating yellow"
+                            @click="changeTextColor('yellow')"
+                          ></a>
+                          <a
+                            class="waves-light btn-floating purple"
+                            @click="changeTextColor('purple')"
+                          ></a>
                         </div>
                       </div>
                       <div class="input-field text-picker col s6">
@@ -147,34 +205,44 @@
                         <select v-model="selectedFont" @change="changeFonts">
                           <option value="Nico Moji">ニコモジ</option>
                           <option value="M PLUS 1p">M PLUS 1p</option>
-                          <option value="M PLUS Rounded 1c">M PLUS Rounded 1c</option>
+                          <option value="M PLUS Rounded 1c"
+                            >M PLUS Rounded 1c</option
+                          >
                           <option value="Hannari">はんなり明朝</option>
                           <option value="Nikukyu">ニクキュウ</option>
                         </select>
                       </div>
 
-                      <br>
+                      <br />
                       <div class="col">
                         BorderWeight
                         <div>
-                          <a class="btn" @click="changeBorderWidth(25)">Heavy</a>
-                          <a class="btn" @click="changeBorderWidth(20)">Middle</a>
-                          <a class="btn" @click="changeBorderWidth(15)">Light</a>
+                          <a class="btn pink darken-3" @click="changeBorderWidth(25)"
+                            >Heavy</a
+                          >
+                          <a class="btn pink darken-2" @click="changeBorderWidth(20)"
+                            >Middle</a
+                          >
+                          <a class="btn pink darken-1" @click="changeBorderWidth(15)"
+                            >Light</a
+                          >
                         </div>
                       </div>
-                      <a class="btn" @click="writeDownToLowerCanvas">位置を確定</a>
+                      <a class="btn pink accent-2" @click="writeDownToLowerCanvas"
+                        >位置を確定</a
+                      >
                     </div>
                   </li>
                 </ul>
               </div>
+              <a class="btn orange lighten-2" @click="nextStamp">次のスタンプ</a>
               <a
-                class="btn"
+                class="btn orange darken-3"
                 @click="grabImage"
                 id="dllink"
                 download="canvas.zip"
-                >完成！</a
+                >完成！({{stampImg.length+1}}ファイルZipでDL)</a
               >
-              <a class="btn" @click="nextStamp">次のスタンプ</a>
               <!--a class="btn"  @click=imagedownload>完成！</a-->
             </div>
           </div>
@@ -191,7 +259,6 @@
     <!-- CHANGED: 撮影した画像を載せるキャンバス．非表示になってる-->
     <canvas id="imageSaveCanvas"></canvas>
 
-    
     <!-- </div> -->
 
     <!--JavaScript at end of body for optimized loading-->
