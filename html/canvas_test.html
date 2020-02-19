@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      div {
+        position: relative;
+      }
+
+      canvas {
+        position: absolute;
+        box-shadow: inset 2px 0px 8px 0px black;
+      }
+    </style>
+    <script>
+      window.onpageshow = function(event) {
+        if (event.persisted) {
+          window.location.reload();
+        }
+      };
+
+      var Text = {
+        text: "Hello World!!",
+        font: "48px serif",
+        textAlign: "center",
+        fontColor: "black"
+      };
+
+      // スクロール禁止
+      function no_scroll() {
+        // PCでのスクロール禁止
+        document.addEventListener("mousewheel", scroll_control, {
+          passive: false
+        });
+        // スマホでのタッチ操作でのスクロール禁止
+        document.addEventListener("touchmove", scroll_control, {
+          passive: false
+        });
+      }
+      // スクロール禁止解除
+      function return_scroll() {
+        // PCでのスクロール禁止解除
+        document.removeEventListener("mousewheel", scroll_control, {
+          passive: false
+        });
+        // スマホでのタッチ操作でのスクロール禁止解除
+        document.removeEventListener("touchmove", scroll_control, {
+          passive: false
+        });
+      }
+      // スクロール関連メソッド
+      function scroll_control(event) {
+        event.preventDefault();
+      }
+
+      var eventNameObj = document.getElementById('events');
+
+      window.onload = () => {
+        var canvas = document.getElementById('canvas_lower');
+        canvas.addEventListener('touchstart',no_scroll);
+        canvas.addEventListener("touchmove", evt => preview_layer(evt, Text));
+        canvas.addEventListener("mousemove", evt => preview_layer(evt, Text));
+        canvas.addEventListener("click", evt => draw_to_lower(evt, Text));
+
+
+      };
+      function preview_layer(e, Text) {
+        var canvas = document.getElementById("canvas_upper");
+        var context = canvas.getContext("2d");
+        var mouseCoordX = e.pageX;
+        var mouseCoordY = e.pageY;
+        context.font = Text.font;
+        context.textAlign = Text.textAlign;
+        context.fillStyle = "white";
+        context.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+        context.fillStyle = Text.fontColor;
+        context.fillText(Text.text, mouseCoordX, mouseCoordY);
+        e.preventDefault();
+
+      }
+      function draw_to_lower(e) {
+        var canvas = document.getElementById("canvas_lower");
+        var context = canvas.getContext("2d");
+        var mouseCoordX = e.pageX;
+        var mouseCoordY = e.pageY;
+
+        context.font = Text.font;
+        context.textAlign = Text.textAlign;
+        context.fillStyle = Text.fontColor;
+
+        context.fillText(Text.text, mouseCoordX, mouseCoordY);
+      }
+    </script>
+  </head>
+  <body>
+    <div>
+      <canvas id="canvas_upper" width="300px" height="400px"></canvas>
+      <canvas id="canvas_lower" width="300px" height="400px"></canvas>
+      <span id="events"></span>
+    </div>
+  </body>
+</html>
