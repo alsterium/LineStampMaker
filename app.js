@@ -57,7 +57,7 @@ app.post("/post", function(req, res){
             pythonPath: "C:/Users/FusionProj/Anaconda3/envs/stampmaker/python.exe",
             pythonOptions:["-u"]
         };
-        let pyshell = new PythonShell("../tf-pose-estimation-master/my_run.py",
+        let pyshell = new PythonShell("../../tf-pose-estimation-master/my_run.py",
                                     python_options);
         pyshell.send(newPath);
 
@@ -160,9 +160,9 @@ app.post("/upload", function(req, res){
             pythonPath: "C:/Users/FusionProj/Anaconda3/envs/stampmaker/python.exe",
             pythonOptions:["-u"]
         };
-        let pyshell = new PythonShell("../tf-pose-estimation-master/my_run.py",
+        let pyshell = new PythonShell("../../tf-pose-estimation-master/my_run.py",
                                     python_options);
-        pyshell.send("../fusionDesignProjFront/images/saved"+file_num+".jpg");
+        pyshell.send("../alsterium/LineStampMaker/images/saved"+file_num+".jpg");
     
         pyshell.on("message", function(message){
             //console.log(message);
