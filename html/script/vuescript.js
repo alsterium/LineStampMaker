@@ -50,6 +50,9 @@ new Vue({
     activateCamera: function() {
       this.toggleView = !this.toggleView;
       if (this.toggleView != true) this.initCamera();
+
+      // edit Hinoto
+      if (this.toggleView != false) upserver();
     },
     initCamera: function() {
       var video = document.getElementById("cam_preview");
