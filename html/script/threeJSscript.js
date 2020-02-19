@@ -323,8 +323,10 @@ function init() {
   //create renderer
   renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector("#model_preview"),
-    preserveDrawingBuffer: true
+    preserveDrawingBuffer: true,
+    alpha:true
   });
+  
 
   // retina対応
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -338,11 +340,11 @@ function init() {
 
   //create cam
   camera = new THREE.PerspectiveCamera(30, width / height, 0.1, 20.0);
-  camera.position.set(0, 1, 5);
+  camera.position.set(0, 1, -5);
 
   //light
-  light = new THREE.DirectionalLight(0xffffff);
-  light.position.set(1.0, 1.0, 1.0).normalize();
+  light = new THREE.DirectionalLight(0xffffff,1.0);
+  light.position.set(1.0, 1.0, -1.0).normalize();
   scene.add(light);
 
   //camera controls
@@ -355,12 +357,12 @@ function init() {
   loadVRM(currentModel);
 
   //helpers
-  const gridHelper = new THREE.GridHelper(10, 10);
-  scene.add(gridHelper);
+  // const gridHelper = new THREE.GridHelper(10, 10);
+  // scene.add(gridHelper);
 
   //軸を表示
-  const axesHelper = new THREE.AxesHelper(5);
-  scene.add(axesHelper);
+  // const axesHelper = new THREE.AxesHelper(5);
+  // scene.add(axesHelper);
 
   animate();
 }

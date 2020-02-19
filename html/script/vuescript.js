@@ -92,6 +92,8 @@ new Vue({
       var context = canvas.getContext("2d");
       context.drawImage(stampBG, 0, 0, 400, 400);
       this.stampImg.push(canvas.toDataURL().split("base64,")[1]);
+      context.clearRect(0,0,canvas.clientWidth,canvas.height);
+      stampBG.getContext("2d").clearRect(0,0,stampBG.clientWidth,stampBG.height);
       clearCanvas();
     },
     changeTextColor: function(str) {
