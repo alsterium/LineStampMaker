@@ -4,44 +4,22 @@ new Vue({
     toggleView: true,
     stampEditMode: false,
     facingValue: "environment",
-    selectedModel:"",
+    selectedModel: "",
     selectedFont: "",
-    Text: ""
+    Text: "",
+    stampImg: []
   },
   methods: {
     grabImage: function() {
       var canvas = document.querySelector("#stampCanvas_lower");
       var stampBG = document.querySelector("#stampCanvas_upper");
-
-      console.log(canvas);
       var context = canvas.getContext("2d");
       context.drawImage(stampBG, 0, 0, 400, 400);
-      console.log(context);
+      this.stampImg.push(canvas.toDataURL().split("base64,")[1]);
 
       var zip = new JSZip();
-      //var image = new Image();
-      //image.src = canvas.toDataURL();
-      //console.log(image)
-      //image = window.atob(image.replace(/^.*,/,''));
-      //console.log(image);
-      zip.file("stamp.png", canvas.toDataURL().split("base64,")[1], {
-        base64: true
-      });
-
-      // var image = new Image();
-      // image = canvas.toDataURL();
-      // console.log(image);
-      // zip.file(image, contentOfA, {
-      //   compression: "STORE"
-      // });
-      // console.log(zip);
-      // //zip.file(image, bin_image, {binary: true});
-
-      console.log(zip);
-
-      //const uri = URL.createObjectURL(zip);
-
-      //var FileSaver = require('file-saver');
+      for (let i = 0; i < this.stampImg.length; i++)
+        zip.file("img" + [i] + ".png", this.stampImg[i], { base64: true });
 
       let link = document.getElementById("dllink");
       zip.generateAsync({ type: "blob" }).then(function(content) {
@@ -101,14 +79,20 @@ new Vue({
       this.$nextTick(() => initStampCanvas()); //DOMレンダリングが更新されたタイミングで呼び出されるコールバック関数
       this.stampEditMode = true;
     },
-    changeModel: function(){
-      console.log(this.selectedModel);
+    changeModel: function() {
       currentModel = "assetts/" + this.selectedModel;
       reloadModel();
     },
-    nextStamp: function(){
+    nextStamp: function() {
       // this.toggleView = !this.toggleView;
       this.stampEditMode = !this.stampEditMode;
+      // copy current canvas function insert here //
+      var canvas = document.querySelector("#stampCanvas_lower");
+      var stampBG = document.querySelector("#stampCanvas_upper");
+      var context = canvas.getContext("2d");
+      context.drawImage(stampBG, 0, 0, 400, 400);
+      this.stampImg.push(canvas.toDataURL().split("base64,")[1]);
+      clearCanvas();
     },
     changeTextColor: function(str) {
       updateText(str, "text_color");

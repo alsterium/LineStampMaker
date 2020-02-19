@@ -1,6 +1,7 @@
 var stampCanvas;
 
 function initStampCanvas() {
+  stampCanvas = undefined;
   //Canvasの初期化
   stampCanvas = new fabric.Canvas("stampCanvas_upper");
   var fontStyle = {
@@ -12,9 +13,11 @@ function initStampCanvas() {
   };
   var textGroup = create_bag_character(fontStyle);
   stampCanvas.add(textGroup);
+  console.log(stampCanvas);
 }
 //テキストの更新
 function updateText(str, option) {
+  console.log(stampCanvas.getActiveObject());
   if (option === "text_color") {
     stampCanvas.getActiveObject()._objects[2].setColor(str);
     stampCanvas.getActiveObject()._objects[0].set("stroke",str);
@@ -70,4 +73,8 @@ function discardSelection(){
   stampCanvas.discardActiveObject();
   console.log(stampCanvas._activeObject);
   stampCanvas.requestRenderAll()
+}
+
+function clearCanvas(){
+  stampCanvas.dispose();
 }
