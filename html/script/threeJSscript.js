@@ -3,7 +3,7 @@
 
 // three.jsで使う各オブジェクトの宣言
 var renderer, scene, camera, light, controls;
-var currentModel = "assetts/MikuMiku.vrm";
+var currentModel = "assetts/bear.vrm";
 
 // CHANGED: ポーズ変換に必要な変数とか
 var init_pose = undefined;
