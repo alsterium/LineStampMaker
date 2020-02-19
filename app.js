@@ -35,7 +35,7 @@ var server = https.createServer(options, app);
 
 
 app.get("/", function(req, res){
-    res.sendFile(__dirname+"html/index.html");
+    res.sendFile(__dirname+"/index.html");
 });
 
 app.post("/post", function(req, res){
