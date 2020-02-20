@@ -70,13 +70,15 @@ new Vue({
     },
     toggleStampEditMode: function() {
       var modelPrevData = document.querySelector("#model_preview");
+      var stampBackground = document.querySelector("#modelBackground");
       var stampBG = document.querySelector("#stampCanvas_lower");
 
       //   var context = modelPrevData.getContext("2d");
       var context = modelPrevData.getContext("webgl"); //モデルを表示している部分はwebglコンテキスト（泣き）
       console.log(context);
-
-      stampBG.getContext("2d").drawImage(modelPrevData, 0, 0, 400, 400);
+      
+      stampBackground.getContext("2d").drawImage(modelPrevData,0,0,400,400);
+      stampBG.getContext("2d").drawImage(stampBackground, 0, 0, 400, 400);
 
       this.$nextTick(() => initStampCanvas()); //DOMレンダリングが更新されたタイミングで呼び出されるコールバック関数
       this.stampEditMode = true;
@@ -94,12 +96,27 @@ new Vue({
       // copy current canvas function insert here //
       var canvas = document.querySelector("#stampCanvas_lower");
       var stampBG = document.querySelector("#stampCanvas_upper");
+      var BackgroundCanvas = document.querySelector("#modelBackground");
+      BackgroundCanvas.getContext("2d").clearRect(0,0,BackgroundCanvas.width,BackgroundCanvas.height);
       var context = canvas.getContext("2d");
       context.drawImage(stampBG, 0, 0, 400, 400);
+
       this.stampImg.push(canvas.toDataURL().split("base64,")[1]);
-      context.clearRect(0,0,canvas.clientWidth,canvas.height);
-      stampBG.getContext("2d").clearRect(0,0,stampBG.clientWidth,stampBG.height);
+      context.clearRect(0,0,canvas.width,canvas.height);
+      stampBG.getContext("2d").clearRect(0,0,stampBG.width,stampBG.height);
       clearCanvas();
+    },
+    changeBackgroundColor:function(color){
+      var canvas = document.querySelector("#modelBackground");
+      var context = canvas.getContext("2d");
+      if(color != null){
+        context.fillStyle = color;
+        context.fillRect(0,0,400,400);
+      }
+      else{
+        context.clearRect(0,0,canvas.width,canvas.height);
+      }
+
     },
     changeTextColor: function(str) {
       updateText(str, "text_color");

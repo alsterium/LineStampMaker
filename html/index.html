@@ -103,6 +103,7 @@
 
     <div id="app">
       <div class="adjust-box box-1x1">
+        <canvas id="modelBackground" width="400" height="400"></canvas>
         <canvas id="stampCanvas_lower" width="400" height="400"></canvas>
         <canvas id="stampCanvas_upper" width="400" height="400"></canvas>
 
@@ -142,7 +143,7 @@
             ><i class="material-icons">switch_camera</i></a
           >
           </div>
-          <ul class="collapsible">
+          <ul class="collapsible z-depth-1">
             <li>
               <div class="collapsible-header">
                 ModelSetting
@@ -166,6 +167,47 @@
                       <input type="range" step="0.1" max="1.0" v-model="BlendedShapeValue" @change="changeBlendedShape"/>
                     </p>
                   </div>
+                  <div class="text-color-picker col s6">
+                    BackGroundColor
+                    <div style="margin-bottom: 3px;">
+                      <a
+                        class="waves-light btn-floating red"
+                        @click="changeBackgroundColor('rgba(200,0,0,1)')"
+                      ></a>
+                      <a
+                        class="waves-light btn-floating blue"
+                        @click="changeBackgroundColor('rgba(39, 241, 241,1)')"
+
+                      ></a>
+                      <a
+                        class="waves-light btn-floating green"
+                        @click="changeBackgroundColor('rgba(39, 241, 140,1)')"
+
+                      ></a>
+                    </div>
+                    <div>
+                      <a
+                        class="waves-light btn-floating pink"
+                        @click="changeBackgroundColor('rgba(229, 111, 192,1)')"
+
+                      ></a>
+                      <a
+                        class="waves-light btn-floating yellow"
+                        @click="changeBackgroundColor('rgba(233, 237, 48,1)')"
+
+                      ></a>
+                      <a
+                        class="waves-light btn-floating purple"
+                        @click="changeBackgroundColor('rgb(179, 21, 207,1)')"
+                      ></a>
+                    </div>
+                    <div>
+                      <a
+                        class="waves-light btn-floating white"
+                        @click="changeBackgroundColor()"
+
+                      ></a>
+                    </div>
                 </div>
               </div>
             </li>
@@ -173,7 +215,7 @@
           <div class="row">
             
             <a
-              class="btn pink darken-1 col s6"
+              class="btn pink darken-1 col s12"
               @click="toggleStampEditMode"
               v-show="toggleView"
               >ポーズを決定</a
